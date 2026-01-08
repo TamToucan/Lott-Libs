@@ -17,6 +17,42 @@
                 "settings set target.process.stop-on-sharedlibrary-events false",
                 "settings set target.process.thread.step-in-avoid-nodebug false"
             ]
+        },
+        {
+            "name": "Debug CaveTest",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Cave-LIB/cave/test/cave_test.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build Cave Test"
+        },
+        {
+            "name": "Debug DMapTest",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/DistanceMap-LIB/distancemap/test/dmapTest.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build DMap Test"
+        },
+        {
+            "name": "Debug DMapTime",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/DistanceMap-LIB/distancemap/test/dmapTime.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build DMap Time"
+        },
+        {
+            "name": "Debug TrackerTest",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Tracker-LIB/tracker/test/trackerTest.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build Tracker Test"
         }
     ]
 }
