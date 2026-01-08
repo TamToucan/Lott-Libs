@@ -62,23 +62,24 @@ if(BUILD_CUTE)
         if(EXISTS "${CUTE_ROOT}/lib/libcute.a" OR EXISTS "${CUTE_ROOT}/lib/libcute.dll.a")
             message(STATUS "[Lott-Libs] Manual Cute Framework detection: FOUND at ${CUTE_ROOT}")
             
-            add_library(cute_lib UNKNOWN IMPORTED GLOBAL)
+            add_library(cute UNKNOWN IMPORTED GLOBAL)
             
             # Detect which file exists to support both static and DLL
             if(EXISTS "${CUTE_ROOT}/lib/libcute.dll.a")
-                set_target_properties(cute_lib PROPERTIES
+                set_target_properties(cute PROPERTIES
                     IMPORTED_IMPLIB "${CUTE_ROOT}/lib/libcute.dll.a"
                     IMPORTED_LOCATION "${CUTE_ROOT}/bin/libcute.dll"
                 )
             else()
-                set_target_properties(cute_lib PROPERTIES
+                set_target_properties(cute PROPERTIES
                     IMPORTED_LOCATION "${CUTE_ROOT}/lib/libcute.a"
                 )
             endif()
 
-            set_target_properties(cute_lib PROPERTIES
+            set_target_properties(cute PROPERTIES
                 INTERFACE_INCLUDE_DIRECTORIES "${CUTE_ROOT}/include;${CUTE_ROOT}"
             )
+            add_library(cute_lib ALIAS cute)
             set(CUTE_FOUND ON)
         else()
             message(WARNING "[Lott-Libs] Cute Framework NOT FOUND in deps/cute. Disabling BUILD_CUTE.")
