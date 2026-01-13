@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/Cave-LIB/cave/src/core"
+                "${workspaceFolder}/Cave-LIB/cave/src/core",
+                "${workspaceFolder}/build/_deps/**"
             ],
             "defines": [
                 "_DEBUG",
