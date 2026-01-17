@@ -6,9 +6,12 @@
 #include "GridTypes.hpp"
 #include "NavigationGraph.hpp"
 #include "Router.hpp"
-// #include "core/Cave.h"
+#define USE_CUTE_CAVE
+#ifndef USE_CUTE_CAVE
+#include "core/Cave.h"
+#else
 #include "cute/CuteCave.hpp"
-
+#endif
 std::pair<float, float> computeDirection(float angleDeg) {
   const double MYPI = 3.14159265358979323846;
   double radians = angleDeg * (MYPI / 180.0);
@@ -18,8 +21,7 @@ std::pair<float, float> computeDirection(float angleDeg) {
 Cave::TileMap makeCave() {
   // Generate the cave
   Cave::TileMap tileMap;
-  SET_DEBUG("ALL");
-#if 0
+#ifndef USE_CUTE_CAVE
   Cave::CaveInfo info;
   Cave::GenerationParams params;
   // Generation parameters
@@ -70,6 +72,9 @@ Cave::TileMap makeCave() {
   // Setup Params
   CuteCave::CuteCave cave;
   cave.setCaveSize(50, 50)
+      .setSmoothing(true)
+      .setSmoothCorners(true)
+      .setSmoothPoints(true)
       .setBorderCellSize(1, 1)
       .setCellSize(1, 1)
       .setAmp(1.0f)
@@ -109,7 +114,6 @@ int main() {
   info.mCaveHeight = 32;
   info.mCellWidth = 8;
   info.mCellHeight = 8;
-
   DistanceMap::Routing::NavigationGraph navGraph;
   navGraph.initialize(graph, info);
   DistanceMap::GridType::Vec2 from(300, 250);
@@ -122,6 +126,7 @@ int main() {
   DistanceMap::GridType::Point toPnt = {(int)(to.x / (info.mCellWidth * 8)),
                                         (int)(to.y / (info.mCellHeight * 8))};
   DistanceMap::GridType::Point prevPnt = toPnt;
+#if 0
   do {
     DistanceMap::GridType::Point fromPnt = {
         (int)(from.x / (info.mCellWidth * 8)),
@@ -159,7 +164,7 @@ if (prevPnt != fromPnt) {
 
   } while (!reached_target && (--count > 0));
   delete ctx;
-
+#endif
   for (int row = 0; row < pathGrid.size(); ++row) {
     for (int col = 0; col < pathGrid[0].size(); ++col) {
       int v = pathGrid[row][col];
