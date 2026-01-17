@@ -1,11 +1,13 @@
+#include <cmath>
+#include <iostream>
+#include <vector>
+
 #include "GridToGraph.hpp"
 #include "GridTypes.hpp"
 #include "NavigationGraph.hpp"
 #include "Router.hpp"
-#include "core/Cave.h"
-#include <cmath>
-#include <iostream>
-#include <vector>
+// #include "core/Cave.h"
+#include "cute/CuteCave.hpp"
 
 std::pair<float, float> computeDirection(float angleDeg) {
   const double MYPI = 3.14159265358979323846;
@@ -14,9 +16,12 @@ std::pair<float, float> computeDirection(float angleDeg) {
 }
 
 Cave::TileMap makeCave() {
+  // Generate the cave
+  Cave::TileMap tileMap;
+  SET_DEBUG("ALL");
+#if 0
   Cave::CaveInfo info;
   Cave::GenerationParams params;
-
   // Generation parameters
   params.seed = 424242;
   params.mOctaves = 1;
@@ -43,10 +48,38 @@ Cave::TileMap makeCave() {
   info.mBorderHeight = 1;
   info.mCellWidth = 8;
   info.mCellHeight = 8;
-
   Cave::Cave cave(info, params);
-  // Generate the cave
-  Cave::TileMap tileMap = cave.generate();
+  tileMap = cave.generate();
+
+#else
+
+  // Cave generation params
+  Cave::GenerationStep step;
+  step.b3_min = 3;
+  step.b3_max = 4;
+  step.b5_min = 12;
+  step.b5_max = 16;
+  step.s3_min = 2;
+  step.s3_max = 5;
+  step.s5_min = 10;
+  step.s5_max = 14;
+  step.reps = 2;
+  std::vector<Cave::GenerationStep> gens;
+  gens.push_back(step);
+
+  // Setup Params
+  CuteCave::CuteCave cave;
+  cave.setCaveSize(50, 50)
+      .setBorderCellSize(1, 1)
+      .setCellSize(1, 1)
+      .setAmp(1.0f)
+      .setOctaves(1)
+      .setPerlin(false)
+      .setWallChance(0.65f)
+      .setFreq(13.7f)
+      .setGenerations(gens);
+  tileMap = cave.make_cave(4242);
+#endif
 
   // Print the tile map to the console
   for (int y = 0; y < tileMap.size(); ++y) {
@@ -64,8 +97,8 @@ int main() {
 
   // Convert to DistanceMap format (0=WALL, 1=PATH)
   auto grid = tileMap;
-  for (auto &row : grid) {
-    for (auto &cell : row) {
+  for (auto& row : grid) {
+    for (auto& cell : row) {
       cell = (cell == Cave::FLOOR) ? 1 : 0;
     }
   }
@@ -81,7 +114,7 @@ int main() {
   navGraph.initialize(graph, info);
   DistanceMap::GridType::Vec2 from(300, 250);
   DistanceMap::GridType::Vec2 to(1950, 1086);
-  DistanceMap::Router::RouteCtx *ctx = new DistanceMap::Router::RouteCtx();
+  DistanceMap::Router::RouteCtx* ctx = new DistanceMap::Router::RouteCtx();
   ctx->type = -1;
   int count = 2000;
   int mv = 1;
