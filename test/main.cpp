@@ -6,7 +6,7 @@
 #include "GridTypes.hpp"
 #include "NavigationGraph.hpp"
 #include "Router.hpp"
-#define USE_CUTE_CAVE
+// #define USE_CUTE_CAVE
 #ifndef USE_CUTE_CAVE
 #include "core/Cave.h"
 #else
@@ -126,7 +126,7 @@ int main() {
   DistanceMap::GridType::Point toPnt = {(int)(to.x / (info.mCellWidth * 8)),
                                         (int)(to.y / (info.mCellHeight * 8))};
   DistanceMap::GridType::Point prevPnt = toPnt;
-#if 0
+#if 1
   do {
     DistanceMap::GridType::Point fromPnt = {
         (int)(from.x / (info.mCellWidth * 8)),
@@ -153,12 +153,19 @@ if (prevPnt != fromPnt) {
               << std::endl;
 
     float ang = navGraph.getMoveDirection(ctx, from, to, 0);
-    std::pair<float, float> mv = computeDirection(ang);
-    from.x += mv.first * 13;
-    from.y += mv.second * 13;
+    // std::pair<float, float> mv = computeDirection(ang); // Not needed for resolveMove
+
+    // Resolve move with sliding
+    DistanceMap::GridType::Vec2 nextPos = navGraph.resolveMove(from, ang, 13);
+
+    // Calculate effective movement for logging
+    float movedX = nextPos.x - from.x;
+    float movedY = nextPos.y - from.y;
+
+    from = nextPos;
     DistanceMap::GridType::Point nw = {(int)(from.x / (info.mCellWidth * 8)),
                                        (int)(from.y / (info.mCellHeight * 8))};
-    std::cerr << "CTV MV " << mv.first << "," << mv.second << "  ang " << ang
+    std::cerr << "CTV MV " << movedX << "," << movedY << "  ang " << ang
               << " cell: " << fromPnt.first << "," << fromPnt.second << " -> "
               << nw.first << "," << nw.second << std::endl;
 
