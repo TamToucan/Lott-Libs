@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 project(Lott-LIBS)
 
+
 # --- 1. Global Options & Flags ---
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
@@ -34,7 +35,6 @@ FetchContent_Declare(
     Libs
     GIT_REPOSITORY https://github.com/TamToucan/Libs.git
     GIT_TAG main
-    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Libs"
 )
 
 # Make dependencies available globally
