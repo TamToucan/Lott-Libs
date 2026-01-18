@@ -48,8 +48,8 @@ Cave::TileMap makeCave() {
   info.mCaveHeight = 32;
   info.mBorderWidth = 1;
   info.mBorderHeight = 1;
-  info.mCellWidth = 8;
-  info.mCellHeight = 8;
+  info.mCellWidth = 8;   // NOT actually needed, GDCave thing
+  info.mCellHeight = 8;  // NOT actually needed, GDCave thing
   Cave::Cave cave(info, params);
   tileMap = cave.generate();
 
@@ -114,8 +114,7 @@ int main() {
   info.mCaveHeight = 32;
   info.mCellWidth = 8;
   info.mCellHeight = 8;
-  DistanceMap::Routing::NavigationGraph navGraph;
-  navGraph.initialize(graph, info);
+  DistanceMap::Routing::NavigationGraph navGraph(graph, info);
   DistanceMap::GridType::Vec2 from(300, 250);
   DistanceMap::GridType::Vec2 to(1950, 1086);
   DistanceMap::Router::RouteCtx* ctx = new DistanceMap::Router::RouteCtx();
@@ -123,14 +122,14 @@ int main() {
   int count = 2000;
   int mv = 1;
   bool reached_target = false;
-  DistanceMap::GridType::Point toPnt = {(int)(to.x / (info.mCellWidth * 8)),
-                                        (int)(to.y / (info.mCellHeight * 8))};
+  DistanceMap::GridType::Point toPnt = {(int)(to.x / (info.mCellWidth * DistanceMap::CELL_MULT)),
+                                        (int)(to.y / (info.mCellHeight * DistanceMap::CELL_MULT))};
   DistanceMap::GridType::Point prevPnt = toPnt;
 #if 1
   do {
     DistanceMap::GridType::Point fromPnt = {
-        (int)(from.x / (info.mCellWidth * 8)),
-        (int)(from.y / (info.mCellHeight * 8))};
+        (int)(from.x / (info.mCellWidth * DistanceMap::CELL_MULT)),
+        (int)(from.y / (info.mCellHeight * DistanceMap::CELL_MULT))};
     reached_target =
         (fromPnt.first == toPnt.first && fromPnt.second == toPnt.second);
     /*
@@ -163,8 +162,8 @@ if (prevPnt != fromPnt) {
     float movedY = nextPos.y - from.y;
 
     from = nextPos;
-    DistanceMap::GridType::Point nw = {(int)(from.x / (info.mCellWidth * 8)),
-                                       (int)(from.y / (info.mCellHeight * 8))};
+    DistanceMap::GridType::Point nw = {(int)(from.x / (info.mCellWidth * DistanceMap::CELL_MULT)),
+                                       (int)(from.y / (info.mCellHeight * DistanceMap::CELL_MULT))};
     std::cerr << "CTV MV " << movedX << "," << movedY << "  ang " << ang
               << " cell: " << fromPnt.first << "," << fromPnt.second << " -> "
               << nw.first << "," << nw.second << std::endl;
