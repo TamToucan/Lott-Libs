@@ -38,10 +38,20 @@ FetchContent_Declare(
 )
 
 # Make dependencies available globally
+# LOTT: Disable Windows global symbol export for Libs (Util) to prevent pthread conflict
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
 if(BUILD_GODOT)
     FetchContent_MakeAvailable(GDExtension Libs)
 else()
     FetchContent_MakeAvailable(Libs)
+endif()
+unset(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS)
+
+if(TARGET Util)
+    message(STATUS "LOTT: Util target found. Applying exports fix.")
+    set_target_properties(Util PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS OFF)
+    # Prevent Util from re-exporting symbols from static libs (like pthread)
+    target_link_options(Util PRIVATE "LINKER:--exclude-libs,ALL")
 endif()
 
 # --- 4. Dependencies: Cute Framework (Bypassable for Submodule use) ---
