@@ -22,6 +22,7 @@ add_custom_target(CopyLottTestDlls ALL
         $<TARGET_FILE:Tracker>
         $<TARGET_FILE:DistanceMap>
         $<TARGET_FILE:CuteDistanceMap>
+        $<TARGET_FILE:Util>
         $<TARGET_FILE_DIR:LottLibsTest>
     VERBATIM
 )
