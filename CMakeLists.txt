@@ -33,9 +33,8 @@ endif()
 # --- 3. Dependencies: Common Libs (FetchContent) ---
 FetchContent_Declare(
     Libs
-    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Libs"
-    # GIT_REPOSITORY https://github.com/TamToucan/Libs.git
-    # GIT_TAG main
+    GIT_REPOSITORY https://github.com/TamToucan/Libs.git
+    GIT_TAG main
 )
 
 # Make dependencies available globally
