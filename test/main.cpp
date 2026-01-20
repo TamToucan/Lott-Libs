@@ -98,6 +98,7 @@ Cave::TileMap makeCave() {
 }
 
 int main() {
+  SET_DEBUG("ALL");
   auto tileMap = makeCave();
 
   // Convert to DistanceMap format (0=WALL, 1=PATH)
