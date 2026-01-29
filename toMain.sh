@@ -5,7 +5,5 @@ do
    git checkout main
    cd ..
 done
-git add -u
-git commit -m"Update to main"
-git push
+git checkout main
 
