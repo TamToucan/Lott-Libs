@@ -35,6 +35,7 @@ FetchContent_Declare(
     Libs
     GIT_REPOSITORY https://github.com/TamToucan/Libs.git
     GIT_TAG main
+    UPDATE_DISCONNECTED 1
 )
 
 # Make dependencies available globally
