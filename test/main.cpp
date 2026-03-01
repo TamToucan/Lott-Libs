@@ -26,10 +26,11 @@ Cave::TileMap makeCave() {
   Cave::GenerationParams params;
   // Generation parameters
   params.seed = 424242;
-  params.mOctaves = 1;
-  params.mPerlin = false;
-  params.mWallChance = 0.65;
-  params.mFreq = 13.7;
+  params.cellular.mOctaves = 1;
+  params.cellular.mPerlin = false;
+  params.cellular.mWallChance = 0.65;
+  params.cellular.mFreq = 13.7;
+  params.mCaveType = Cave::CaveType::CELLULAR;
 
   Cave::GenerationStep step;
   step.b3_min = 3;
@@ -41,15 +42,15 @@ Cave::TileMap makeCave() {
   step.s5_min = 10;
   step.s5_max = 14;
   step.reps = 2;
-  params.mGenerations.push_back(step);
+  params.cellular.mGenerations.push_back(step);
 
   // CaveInfo parameters
   info.mCaveWidth = 32;
   info.mCaveHeight = 32;
   info.mBorderWidth = 1;
   info.mBorderHeight = 1;
-  info.mCellWidth = 8;   // NOT actually needed, GDCave thing
-  info.mCellHeight = 8;  // NOT actually needed, GDCave thing
+  info.mCellWidth = 8;  // NOT actually needed, GDCave thing
+  info.mCellHeight = 8; // NOT actually needed, GDCave thing
   Cave::Cave cave(info, params);
   tileMap = cave.generate();
 
@@ -102,8 +103,8 @@ int main() {
 
   // Convert to DistanceMap format (0=WALL, 1=PATH)
   auto grid = tileMap;
-  for (auto& row : grid) {
-    for (auto& cell : row) {
+  for (auto &row : grid) {
+    for (auto &cell : row) {
       cell = (cell == Cave::FLOOR) ? 1 : 0;
     }
   }
@@ -117,13 +118,14 @@ int main() {
   DistanceMap::Routing::NavigationGraph navGraph(graph, info);
   DistanceMap::GridType::Vec2 from(300, 250);
   DistanceMap::GridType::Vec2 to(1950, 1086);
-  DistanceMap::Router::RouteCtx* ctx = new DistanceMap::Router::RouteCtx();
+  DistanceMap::Router::RouteCtx *ctx = new DistanceMap::Router::RouteCtx();
   ctx->type = -1;
   int count = 2000;
   int mv = 1;
   bool reached_target = false;
-  DistanceMap::GridType::Point toPnt = {(int)(to.x / (info.mCellWidth * DistanceMap::CELL_MULT)),
-                                        (int)(to.y / (info.mCellHeight * DistanceMap::CELL_MULT))};
+  DistanceMap::GridType::Point toPnt = {
+      (int)(to.x / (info.mCellWidth * DistanceMap::CELL_MULT)),
+      (int)(to.y / (info.mCellHeight * DistanceMap::CELL_MULT))};
   DistanceMap::GridType::Point prevPnt = toPnt;
 #if 1
   do {
@@ -152,7 +154,8 @@ if (prevPnt != fromPnt) {
               << std::endl;
 
     float ang = navGraph.getMoveDirection(ctx, from, to, 0);
-    // std::pair<float, float> mv = computeDirection(ang); // Not needed for resolveMove
+    // std::pair<float, float> mv = computeDirection(ang); // Not needed for
+    // resolveMove
 
     // Resolve move with sliding
     DistanceMap::GridType::Vec2 nextPos = navGraph.resolveMove(from, ang, 13);
@@ -162,8 +165,9 @@ if (prevPnt != fromPnt) {
     float movedY = nextPos.y - from.y;
 
     from = nextPos;
-    DistanceMap::GridType::Point nw = {(int)(from.x / (info.mCellWidth * DistanceMap::CELL_MULT)),
-                                       (int)(from.y / (info.mCellHeight * DistanceMap::CELL_MULT))};
+    DistanceMap::GridType::Point nw = {
+        (int)(from.x / (info.mCellWidth * DistanceMap::CELL_MULT)),
+        (int)(from.y / (info.mCellHeight * DistanceMap::CELL_MULT))};
     std::cerr << "CTV MV " << movedX << "," << movedY << "  ang " << ang
               << " cell: " << fromPnt.first << "," << fromPnt.second << " -> "
               << nw.first << "," << nw.second << std::endl;
