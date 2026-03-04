@@ -1,15 +1,20 @@
 [submodule "Cave-LIB"]
 	path = Cave-LIB
 	url = https://github.com/TamToucan/Cave-LIB.git
+	branch = main
 [submodule "Maze-LIB"]
 	path = Maze-LIB
 	url = https://github.com/TamToucan/Maze-LIB.git
+	branch = main
 [submodule "DistanceMap-LIB"]
 	path = DistanceMap-LIB
 	url = https://github.com/TamToucan/DistanceMap-LIB.git
+	branch = main
 [submodule "Tracker-LIB"]
 	path = Tracker-LIB
 	url = https://github.com/TamToucan/Tracker-LIB.git
+	branch = main
 [submodule "Libs"]
 	path = Libs
 	url = https://github.com/TamToucan/Libs
+	branch = main
