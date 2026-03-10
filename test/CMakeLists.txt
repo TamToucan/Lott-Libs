@@ -18,7 +18,6 @@ add_custom_target(CopyLottTestDlls ALL
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:Cave>
         $<TARGET_FILE:CuteCave>
-        $<TARGET_FILE:cute>
         $<TARGET_FILE:Tracker>
         $<TARGET_FILE:DistanceMap>
         $<TARGET_FILE:CuteDistanceMap>

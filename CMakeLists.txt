@@ -30,22 +30,22 @@ if(BUILD_GODOT)
     )
 endif()
 
-# --- 3. Dependencies: Common Libs (FetchContent) ---
-FetchContent_Declare(
-    Libs
-    GIT_REPOSITORY https://github.com/TamToucan/Libs.git
-    GIT_TAG main
-    UPDATE_DISCONNECTED 1
-)
-
-# Make dependencies available globally
-# LOTT: Disable Windows global symbol export for Libs (Util) to prevent pthread conflict
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
-if(BUILD_GODOT)
-    FetchContent_MakeAvailable(GDExtension Libs)
-else()
-    FetchContent_MakeAvailable(Libs)
+# --- 3. Dependencies: Common Libs ---
+# LOTT: Use local Libs directory instead of FetchContent to keep local changes (static conversion)
+if(NOT TARGET Util)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Libs/CMakeLists.txt")
+        add_subdirectory(Libs)
+    else()
+        FetchContent_Declare(
+            Libs
+            GIT_REPOSITORY https://github.com/TamToucan/Libs.git
+            GIT_TAG main
+            UPDATE_DISCONNECTED 1
+        )
+        FetchContent_MakeAvailable(Libs)
+    endif()
 endif()
+# DONT: set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
 unset(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS)
 
 if(TARGET Util)
