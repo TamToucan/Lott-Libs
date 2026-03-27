@@ -150,10 +150,7 @@ if (prevPnt != fromPnt) {
       break;
     }
     pathGrid[fromPnt.second][fromPnt.first] = 'x';
-    std::cerr << "MOVEFROM: " << fromPnt.first << "," << fromPnt.second
-              << std::endl;
-
-    float ang = navGraph.getMoveDirection(ctx, from, to, 0);
+    float ang = navGraph.getMoveDirection(ctx, from, to, 0, 1.0f);
     // std::pair<float, float> mv = computeDirection(ang); // Not needed for
     // resolveMove
 
