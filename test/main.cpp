@@ -4,7 +4,7 @@
 
 #include "GridToGraph.hpp"
 #include "GridTypes.hpp"
-#include "NavigationGraph.hpp"
+#include "NavigatorGraph.hpp"
 #include "Router.hpp"
 // #define USE_CUTE_CAVE
 #ifndef USE_CUTE_CAVE
@@ -115,7 +115,7 @@ int main() {
   info.mCaveHeight = 32;
   info.mCellWidth = 8;
   info.mCellHeight = 8;
-  DistanceMap::Routing::NavigationGraph navGraph(graph, info);
+  DistanceMap::Routing::NavigatorGraph navGraph(graph, info);
   DistanceMap::GridType::Vec2 from(300, 250);
   DistanceMap::GridType::Vec2 to(1950, 1086);
   DistanceMap::Router::RouteCtx *ctx = new DistanceMap::Router::RouteCtx();
